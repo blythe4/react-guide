@@ -4,6 +4,13 @@ import NewPost from "./NewPost";
 import Post from "./Post";
 import classes from "./PostsList.module.css";
 
+/**
+ *
+ * fetch에서 받아오는 데이터는 Node.js로 되어 있는 백엔드에서 가져옴.
+ * https://github.com/academind/react-complete-guide-code/blob/zz-reactjs-summary-updated/extra-files/dummy-backend.zip
+ * 위 링크에서 다운받아 `npm install` 후 `npm start`로 실행 후 데이터 전송을 해야한다.
+ *
+ */
 const PostsList = ({ isPosting, onStopPosting }) => {
     const [posts, setPosts] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
