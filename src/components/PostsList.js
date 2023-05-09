@@ -5,34 +5,34 @@ import Post from "./Post";
 import classes from "./PostsList.module.css";
 
 const PostsList = ({ isPosting, onStopPosting }) => {
-    const [enteredBody, setEnteredBody] = useState("");
-    const [enteredAuth, setEnteredAuth] = useState("");
-    // useState[0] - current value
-    // useState[1] - state updating function
-    const bodyChangeHandler = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setEnteredBody(value);
-    };
-    const authChangeHandler = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setEnteredAuth(value);
+    const [posts, setPosts] = useState([]);
+
+    const addPostHandler = (postData) => {
+        // setPosts([postData, ...posts]);
+        setPosts((existingPosts) => [postData, ...existingPosts]);
+        console.log(posts);
     };
 
     return (
         <>
             {isPosting && (
                 <Modal onClose={onStopPosting}>
-                    <NewPost onBodyChange={bodyChangeHandler} onAuthorChange={authChangeHandler} />
+                    <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
                 </Modal>
             )}
-            <ul className={classes.posts}>
-                <Post author={enteredAuth} body={enteredBody} />
-                <Post author="Selina" body="Hello World" />
-            </ul>
+            {posts.length > 0 && (
+                <ul className={classes.posts}>
+                    {posts.map((post) => (
+                        <Post key={post.body} author={post.author} body={post.body} />
+                    ))}
+                </ul>
+            )}
+            {posts.length === 0 && (
+                <div style={{ textAlign: "center", color: "white" }}>
+                    <h2>There are no posts yet.</h2>
+                    <p>Start adding some!</p>
+                </div>
+            )}
         </>
     );
 };
