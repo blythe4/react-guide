@@ -1,9 +1,10 @@
 import { useState } from "react";
+import Modal from "./Modal";
 import NewPost from "./NewPost";
 import Post from "./Post";
 import classes from "./PostsList.module.css";
 
-const PostsList = () => {
+const PostsList = ({ isPosting, onStopPosting }) => {
     const [enteredBody, setEnteredBody] = useState("");
     const [enteredAuth, setEnteredAuth] = useState("");
     // useState[0] - current value
@@ -23,7 +24,11 @@ const PostsList = () => {
 
     return (
         <>
-            <NewPost onBodyChange={bodyChangeHandler} onAuthorChange={authChangeHandler} />
+            {isPosting && (
+                <Modal onClose={onStopPosting}>
+                    <NewPost onBodyChange={bodyChangeHandler} onAuthorChange={authChangeHandler} />
+                </Modal>
+            )}
             <ul className={classes.posts}>
                 <Post author={enteredAuth} body={enteredBody} />
                 <Post author="Selina" body="Hello World" />
