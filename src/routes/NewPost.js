@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import Modal from "../components/Modal";
 import classes from "./NewPost.module.css";
 
-const NewPost = ({ onCancel, onAddPost }) => {
+const NewPost = ({ onAddPost }) => {
     const [enteredBody, setEnteredBody] = useState("");
     const [enteredAuth, setEnteredAuth] = useState("");
     // useState[0] - current value
@@ -26,26 +28,25 @@ const NewPost = ({ onCancel, onAddPost }) => {
             author: enteredAuth,
         };
         onAddPost(postData);
-        onCancel();
     };
 
     return (
-        <form className={classes.form} onSubmit={submitHandler}>
-            <p>
-                <label htmlFor="body">Text</label>
-                <textarea id="body" required rows={3} onChange={bodyChangeHandler} />
-            </p>
-            <p>
-                <label htmlFor="name">Your name</label>
-                <input type="text" id="name" required onChange={authChangeHandler} />
-            </p>
-            <p className={classes.actions}>
-                <button type="button" onClick={onCancel}>
-                    Cancel
-                </button>
-                <button>Submit</button>
-            </p>
-        </form>
+        <Modal>
+            <form className={classes.form} onSubmit={submitHandler}>
+                <p>
+                    <label htmlFor="body">Text</label>
+                    <textarea id="body" required rows={3} onChange={bodyChangeHandler} />
+                </p>
+                <p>
+                    <label htmlFor="name">Your name</label>
+                    <input type="text" id="name" required onChange={authChangeHandler} />
+                </p>
+                <p className={classes.actions}>
+                    <Link to="..">Cancel</Link>
+                    <button>Submit</button>
+                </p>
+            </form>
+        </Modal>
     );
 };
 

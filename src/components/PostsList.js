@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import Modal from "./Modal";
-import NewPost from "./NewPost";
 import Post from "./Post";
 import classes from "./PostsList.module.css";
 
@@ -11,7 +9,7 @@ import classes from "./PostsList.module.css";
  * 위 링크에서 다운받아 `npm install` 후 `npm start`로 실행 후 데이터 전송을 해야한다.
  *
  */
-const PostsList = ({ isPosting, onStopPosting }) => {
+const PostsList = () => {
     const [posts, setPosts] = useState([]);
     const [isFetching, setIsFetching] = useState(false);
     useEffect(() => {
@@ -45,11 +43,6 @@ const PostsList = ({ isPosting, onStopPosting }) => {
 
     return (
         <>
-            {isPosting && (
-                <Modal onClose={onStopPosting}>
-                    <NewPost onCancel={onStopPosting} onAddPost={addPostHandler} />
-                </Modal>
-            )}
             {!isFetching && posts.length > 0 && (
                 <ul className={classes.posts}>
                     {posts.map((post) => (
