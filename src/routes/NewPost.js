@@ -1,53 +1,53 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Form, redirect } from "react-router-dom";
 import Modal from "../components/Modal";
 import classes from "./NewPost.module.css";
 
-const NewPost = ({ onAddPost }) => {
-    const [enteredBody, setEnteredBody] = useState("");
-    const [enteredAuth, setEnteredAuth] = useState("");
-    // useState[0] - current value
-    // useState[1] - state updating function
-    const bodyChangeHandler = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setEnteredBody(value);
-    };
-    const authChangeHandler = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setEnteredAuth(value);
-    };
+/**
+ *
+ * <Form> : react-router-dom
+ * 태그 안에 있는 name 속성으로 데이터를 갖는다.
+ *
+ */
 
-    const submitHandler = (event) => {
-        event.preventDefault();
-        const postData = {
-            body: enteredBody,
-            author: enteredAuth,
-        };
-        onAddPost(postData);
-    };
-
+const NewPost = () => {
     return (
         <Modal>
-            <form className={classes.form} onSubmit={submitHandler}>
+            <Form method="post" className={classes.form}>
                 <p>
                     <label htmlFor="body">Text</label>
-                    <textarea id="body" required rows={3} onChange={bodyChangeHandler} />
+                    <textarea id="body" name="body" required rows={3} />
                 </p>
                 <p>
                     <label htmlFor="name">Your name</label>
-                    <input type="text" id="name" required onChange={authChangeHandler} />
+                    <input type="text" id="name" name="author" required />
                 </p>
                 <p className={classes.actions}>
                     <Link to="..">Cancel</Link>
                     <button>Submit</button>
                 </p>
-            </form>
+            </Form>
         </Modal>
     );
 };
 
 export default NewPost;
+
+/**
+ *
+ * Object.fromEntries
+ * <Form> 태그 안에 있는 name으로 Object 생성
+ * formData.get('body')
+ *
+ */
+export const action = async ({ request }) => {
+    const formData = await request.formData();
+    const postData = Object.fromEntries(formData); // { body: '...', author: '...' }
+    await fetch("http://localhost:8080/posts", {
+        method: "POST",
+        body: JSON.stringify(postData),
+        headers: {
+            "content-Type": "application/json",
+        },
+    });
+    return redirect("/");
+};
